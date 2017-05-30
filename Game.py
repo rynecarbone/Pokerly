@@ -40,9 +40,12 @@ class PokerHand():
   #_______________________________      
   def update_hand(self, s, fh, rc, kc):
     self.score = s
-    self.final_hand = fh
     self.rank_cards = rc
     self.kicker_cards = kc
+    final_hand = P.Hand()
+    for c in fh:
+      final_hand.add_card(c)
+    self.final_hand = final_hand
 
 ###
 class Poker:
@@ -77,10 +80,9 @@ class Poker:
     fl = self.is_flush(s)
     # Royal Flush
     if st and fl:
-      sc = 0
       if v[-1] == 10:
         sc = 10
-      # Ace-low straight flush
+      #vAce-low straight flush
       elif al and fl:
         sc = 9
         rc.add_card(cards[1])
