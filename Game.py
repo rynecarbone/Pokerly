@@ -52,11 +52,14 @@ class Poker:
   '''Class to evaluate Poker hand'''
   
   def __init__(self):
+    v = []
+    s = []
     pass
 
   def values(self, cards):
     '''Returns sorted values'''
-    return sorted([c.value for c in cards], reverse=True)
+    #return sorted([c.value for c in cards], reverse=True)
+    return [c.value for c in cards]
   def suits(self, cards):  
     '''Returns suits'''
     return [c.suit for c in cards]
@@ -74,13 +77,11 @@ class Poker:
   
   #______________________________________
   def straight_flush(self, cards, rc, kc):
-    v = self.values(cards)
-    s = self.suits(cards)
-    st, al = self.is_straight(v)
-    fl = self.is_flush(s)
+    st, al = self.is_straight(self.v)
+    fl = self.is_flush(self.s)
     # Royal Flush
     if st and fl:
-      if v[-1] == 10:
+      if self.v[-1] == 10:
         sc = 10
       #vAce-low straight flush
       elif al and fl:
@@ -94,32 +95,26 @@ class Poker:
     return False
   #______________________________________
   def four_of_a_kind(self, cards, rc, kc):
-    v = self.values(cards)
-    k_4 = self.n_kind(4, v)
-    if k_4:
+    if self.k_4:
       sc = 8
       for c in cards:
-        if c.value in k_4: rc.add_card(c)
+        if c.value in self.k_4: rc.add_card(c)
         else: kc.add_card(c)
       return sc, rc, kc
     return False
   #__________________________________
   def full_house(self, cards, rc, kc):
-    v = self.values(cards)
-    k_3 = self.n_kind(3,v)
-    k_2 = self.n_kind(2,v)
-    if k_3 and k_2 and len(k_2-k_3) > 0:
+    if self.k_3 and self.k_2 and len(self.k_2-self.k_3) > 0:
       sc = 7
       for c in cards:
-        if c.value in k_3: rc.add_card(c)
+        if c.value in self.k_3: rc.add_card(c)
       for c in cards:
-        if c.value in (k_2 - k_3): rc.add_card(c)
+        if c.value in (self.k_2 - self.k_3): rc.add_card(c)
       return sc, rc, kc
     return False
   #______________________________
   def flush(self, cards, rc, kc):
-    s = self.suits(cards)
-    if self.is_flush(s):
+    if self.is_flush(self.s):
       sc = 6
       for c in cards:
         rc.add_card(c)
@@ -127,8 +122,7 @@ class Poker:
     return False
   #________________________________
   def straight(self, cards, rc, kc):
-    v = self.values(cards)
-    st, al = self.is_straight(v)
+    st, al = self.is_straight(self.v)
     if st:
       sc = 5
       rc.add_card(cards[1]) if al else rc.add_card(cards[0])
@@ -136,38 +130,34 @@ class Poker:
     return False
   #_______________________________________
   def three_of_a_kind(self, cards, rc, kc):
-    v = self.values(cards)
-    k_3 = self.n_kind(3,v)
-    if k_3:
+    if self.k_3:
       sc = 4
       for c in cards:
-        if c.value in k_3: rc.add_card(c)
+        if c.value in self.k_3: rc.add_card(c)
         else: kc.add_card(c)
       return sc, rc, kc
     return False
   #________________________________
   def pair(self, cards, rc, kc):
-    v = self.values(cards)
-    k_2 = self.n_kind(2,v)
     # Two pair
-    if len(k_2) > 1:
+    if len(self.k_2) > 1:
       sc = 3
       for c in cards:
-        if c.value == max(k_2): rc.add_card(c)
-        elif c.value not in k_2: kc.add_card(c)
+        if c.value == max(self.k_2): rc.add_card(c)
+        elif c.value not in self.k_2: kc.add_card(c)
       for c in cards:
-        if c.value == min(k_2): rc.add_card(c)
+        if c.value == min(self.k_2): rc.add_card(c)
     # Pair
-    elif k_2:
+    elif self.k_2:
       sc = 2
       for c in cards:
-        if c.value in k_2: rc.add_card(c)
+        if c.value in self.k_2: rc.add_card(c)
         else: kc.add_card(c)
     # High card
     else:
       sc = 1
       for c in cards:
-        if c.value == v[0]: rc.add_card(c)
+        if c.value == self.v[0]: rc.add_card(c)
         else: kc.add_card(c)
     return sc, rc, kc
 
@@ -175,8 +165,14 @@ class Poker:
   def eval_hand(self, cards):
     poker_hands = [self.straight_flush,self.four_of_a_kind,self.full_house,
                    self.flush,self.straight,self.three_of_a_kind,self.pair]
-    s_cards = sorted(cards, key=attrgetter('value','suits'), reverse=True)
     
+    s_cards = sorted(cards, key=attrgetter('value','suits'), reverse=True)
+    self.v = self.values(s_cards)
+    self.s = self.suits(s_cards)
+    self.k_4 = self.n_kind(4, self.v)
+    self.k_3 = self.n_kind(3, self.v)
+    self.k_2 = self.n_kind(2, self.v)
+
     rank_cards   = P.Hand()
     kicker_cards = P.Hand()
     for ranker in poker_hands:

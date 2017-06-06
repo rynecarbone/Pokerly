@@ -3,6 +3,7 @@ import Deck as D
 import Player as P
 import Game as G
 import matplotlib.pyplot as plt
+import cProfile
 
 #_________________
 def print_result(deck, pool, players):
@@ -49,24 +50,32 @@ def sim_game(names):
   return my_deck, my_pool, players, top_score
 
 #_______________________
-def main():
+def set_up(n_runs=1000, print_state=False, print_stats=False):
+  
   names = ['Alice','Bob','Cthulhu']
   scores = [0,0,0,0,0,0,0,0,0,0]
   l_scores = []
-  for x in range(10000):
+  
+  for x in range(n_runs):
+    
     if not x%1000: print('Simulation: {0}'.format(x))
+    
     deck, pool, players, score = sim_game(names)
     scores[score-1] += 1
     l_scores.append(score)
-    #if score > 9:
-    #  print('Successfully found rare hand after {0} simulations!'.format(x))
-    #  print_result(deck, pool, players)
-    #  break
-  for i,s in enumerate(scores):
-    print('{0} {1}'.format(i, s/10000.))
+    if print_state:
+      print_result(deck, pool, players)
+  
 
-  plt.hist(l_scores,range(10))
-  plt.show()
+  if print_stats:
+    for i,s in enumerate(scores):
+      print('{0} {1}'.format(i, s/10000.))
+    plt.hist(l_scores,range(11))
+    plt.show()
+
+#__________
+def main():
+  set_up(3,print_state=True) 
 
 #________________________
 if __name__ == "__main__":
