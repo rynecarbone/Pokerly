@@ -57,17 +57,19 @@ for p in players:
 
 ### Simulation compared to theory
 After 10k simulations, the number of hands reflects the theory probabilities very well
-![Simulation histogram odds](poker_sim_ratio.png)
 
 Score | Hand | % Simulated | % Predicted |
 ------|------|-------------|-------------|
-1 |      High Card| 17.4710| 17.4119|
-2 |       One Pair| 43.7390| 43.8225|
-3 |       Two Pair| 23.5070| 23.4955|
-4 |Three of a Kind| 4.7600 | 4.8299| 
-5 |       Straight| 4.6030 | 4.6194| 
-6 |          Flush| 3.1210 | 3.0255| 
-7 |     Full House| 2.6240 | 2.5961| 
-8  |Four of a Kind| 0.1500 | 0.1681| 
-9  |Straight Flush |0.0220 | 0.0279 |
-10 |Royal Flush | 0.0030 | 0.0032 |
+1  |      High Card | 17.5720 | 17.4119|
+2  |       One Pair | 43.6790 | 43.8225|
+3  |       Two Pair | 23.6130 | 23.4955|
+4  |Three of a Kind | 4.7220  | 4.8299| 
+5  |       Straight | 4.6450  | 4.6194| 
+6  |          Flush | 3.0190  | 3.0255| 
+7  |     Full House | 2.5320  | 2.5961| 
+8  |Four of a Kind  | 0.1820  | 0.1681| 
+9  |Straight Flush  | 0.0350  | 0.0279 |
+10 |Royal Flush     | 0.0010  | 0.0032 |
+
+
+![Simulation histogram odds](poker_sim_ratio.png)

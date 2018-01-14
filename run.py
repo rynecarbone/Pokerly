@@ -124,10 +124,12 @@ def set_up(n_runs=1000, num_players=3, print_state=False, print_stats=False):
     ax1.legend(loc='upper right')
     ax1.set_xlim(0.5, 10.5)
     ax1.set_ylabel('Frequency')
+    ax1.set_xlabel('Score')
     ratio = [ns[i]/n2[i]-1 if n2[i] != 0 else 0 for i in range(10)]
     bins = [i for i in range(1,11) ]
     ax2.bar(bins, ratio,align="center",bottom=1.0, width=1.0, alpha=0.75, color="midnightblue")
     ax2.set_ylabel('Ratio sim/theory')
+    ax2.set_xlabel('Score')
     ax2.axhline(1, color='black')
     ax2.set_ylim(0.5,1.5)
     ax2.set_xlim(0.5,10.5)
