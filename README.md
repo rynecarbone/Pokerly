@@ -54,3 +54,6 @@ for p in players:
   print('  Rank cards: {0}'.format(i_hand.rank_cards))
   print('Kicker Cards: {0}'.format(i_hand.kicker_cards))
 ```
+
+### Simulation compared to theory
+![Simulation histogram odds](poker_sim_ratio.png)

@@ -19,6 +19,37 @@ class PokerHand():
     self.hand = hand.cards
     self.pool = pool.cards
     self.score = 0
+  
+  #_____________________________
+  def is_tie(self, score, rank_cards, kicker_cards):
+    '''
+    Returns true if score is same, rank cards are identical,
+    and kicker cards are identical
+    '''
+    if score != self.score:
+      return False
+    if rank_cards != self.rank_cards:
+      return False
+    if kicker_cards != self.kicker_cards:
+      return False
+    return True
+  #_______________________
+  def is_better(self, score, rank_cards, kicker_cards):
+    '''Returns true if input score, rank, kicker
+       is better than current hand
+    '''
+    if score > self.score:
+      return True
+    elif score == self.score:
+      # Better rank of hand (e.g. KK vs QQ) FIXME be careful about two or more rank cards, order
+      if rank_cards > self.rank_cards:
+        return True
+      # Better kickers (e.g. KK, Ace High vs KK, J high)
+      elif rank_cards == self.rank_cards and kicker_cards > self.kicker_cards:
+        return True
+    # Current hand is better
+    return False
+    
   #__________________
   def get_score(self):
     my_poker  = Poker()
@@ -26,17 +57,8 @@ class PokerHand():
     hands     = list(combinations(card_pool, self.max_cards))
     for h in hands:
       i_s, i_rc, i_kc = my_poker.eval_hand(h)
-      # Better hand (e.g flush over pair)
-      if i_s > self.score:
+      if self.is_better(i_s, i_rc, i_kc):
         self.update_hand(i_s, h, i_rc, i_kc)
-      # Same hand
-      elif i_s == self.score:
-        # Better rank of hand (e.g. KK vs QQ) FIXME be careful about two or more rank cards, order
-        if i_rc > self.rank_cards:
-          self.update_hand(i_s, h, i_rc, i_kc)
-        # Better kickers (e.g. KK, Ace High vs KK, J high)
-        elif i_rc == self.rank_cards and i_kc > self.kicker_cards:
-          self.update_hand(i_s, h, i_rc, i_kc)
   #_______________________________      
   def update_hand(self, s, fh, rc, kc):
     self.score = s
