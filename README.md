@@ -55,7 +55,7 @@ for p in players:
   print('Kicker Cards: {0}'.format(i_hand.kicker_cards))
 ```
 
-### Simulation compared to theory
+## Simulation compared to theory
 After 10k simulations, the number of hands reflects the theory probabilities very well
 
 Score | Hand | % Simulated | % Predicted |
